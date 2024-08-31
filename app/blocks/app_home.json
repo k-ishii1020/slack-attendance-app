@@ -1,0 +1,148 @@
+{
+	"type": "home",
+	"blocks": [
+		{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": "出退勤通知Bot",
+				"emoji": true
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "今日もお仕事お疲れ様です:sparkles:"
+			}
+		},
+
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*出勤*"
+			}
+		},
+		{
+			"type": "actions",
+			"elements": [
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": ":office: オフィス出社",
+						"emoji": true
+					},
+                    "action_id": "begin_office_work"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": ":house: リモート出社",
+						"emoji": true
+					},
+                    "action_id": "begin_remote_work"
+				}
+			]
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*退勤*"
+			}
+		},
+		{
+			"type": "actions",
+			"elements": [
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": ":city_sunset: 退勤",
+						"emoji": true
+					},
+                    "action_id": "finish_work"
+				}
+			]
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*休憩*"
+			}
+		},
+		{
+			"type": "actions",
+			"elements": [
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": ":bento: 休憩開始",
+						"emoji": true
+					},
+					"action_id": "begin_break_time"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": ":computer: 休憩終了",
+						"emoji": true
+					},
+					"action_id": "finish_break_time"
+				}
+			]
+		},
+		{
+			"type": "input",
+			"element": {
+				"type": "plain_text_input",
+				"multiline": true,
+				"action_id": "plain_text_input-action"
+			},
+			"label": {
+				"type": "plain_text",
+				"text": "各ボタン押下時に追加事項があれば以下に入力してください（Ex: 本日17時にフレックス退社予定です）",
+				"emoji": true
+			}
+		},
+		{
+			"type": "actions",
+			"elements": [
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": ":gear: 個人設定",
+						"emoji": true
+					},
+					"action_id": "personal_settings"
+				}
+			]
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "通知結果: - "
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": "Ver 1.0.0  Author: <https://github.com/k-ishii1020|k-ishii1020> GitHub: <https://github.com/k-ishii1020/slack-attendance-bot|slack-attendance-bot>"
+				}
+			]
+		}
+	]
+}

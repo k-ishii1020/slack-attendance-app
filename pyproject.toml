@@ -1,0 +1,22 @@
+[tool.ruff]
+ignore = [
+    "E501",
+    "F821",
+    "F541",
+]
+
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+]
+# https://docs.astral.sh/ruff/rules/#pyupgrade-up
+
+line-length = 119
+indent-width = 4
+
+[tool.ruff.isort]
+force-single-line = true
+
+[tool.ruff.per-file-ignores]
