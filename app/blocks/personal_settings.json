@@ -1,5 +1,6 @@
 {
 	"type": "modal",
+    "callback_id": "submit_personal_settings",
 	"submit": {
 		"type": "plain_text",
 		"text": "OK",
@@ -47,7 +48,8 @@
 				"type": "plain_text",
 				"text": "勤怠専用チャンネル（複数選択可）",
 				"emoji": true
-			}
+			},
+            "optional": true
 		},
 		{
 			"type": "context",
@@ -83,7 +85,8 @@
 				"type": "plain_text",
 				"text": "勤怠スレッドがあるチャンネルを選択（複数選択不可）",
 				"emoji": true
-			}
+			},
+            "optional": true
 		},
 		{
 			"type": "input",
@@ -99,7 +102,8 @@
 				"type": "plain_text",
 				"text": "スレッドの最初のメッセージを入力（前方一致）",
 				"emoji": true
-			}
+			},
+            "optional": true
 		},
 		{
 			"type": "input",
@@ -119,7 +123,8 @@
 				"type": "plain_text",
 				"text": "その他",
 				"emoji": true
-			}
+			},
+            "optional": true
 		}
 	]
 }

@@ -4,7 +4,7 @@ import json
 
 from slack_bolt import App
 
-NOTIFICATION_JSON_NUMBER = 11
+NOTIFICATION_JSON_NUMBER = 10
 
 
 class SlackEventHandlers:
@@ -28,11 +28,11 @@ class SlackEventHandlers:
 
         @self.app.action("begin_office_work")
         def handle_begin_office_work(ack, body, client):
-            self.button_action(ack=ack, body=body, client=client, notification_message="オフィス出勤を通知しました")
+            self.button_action(ack=ack, body=body, client=client, notification_message="オフィス出勤を投稿しました")
 
         @self.app.action("begin_remote_work")
         def handle_begin_remote_work(ack, body, client):
-            self.button_action(ack=ack, body=body, client=client, notification_message="リモート出勤を通知しました")
+            self.button_action(ack=ack, body=body, client=client, notification_message="リモート出勤を投稿しました")
 
         @self.app.action("finish_work")
         def handle_finish_work(ack, body, client):
@@ -40,7 +40,7 @@ class SlackEventHandlers:
                 ack=ack,
                 body=body,
                 client=client,
-                notification_message="退勤を通知しました。今日も一日お疲れ様でした！",
+                notification_message="退勤を投稿しました。今日も一日お疲れ様でした！",
             )
 
         @self.app.action("begin_break_time")
@@ -49,7 +49,7 @@ class SlackEventHandlers:
                 ack=ack,
                 body=body,
                 client=client,
-                notification_message="休憩開始を通知しました。ゆっくり休んでくださいね！",
+                notification_message="休憩開始を投稿しました。ゆっくり休んでくださいね！",
             )
 
         @self.app.action("finish_break_time")
@@ -58,7 +58,7 @@ class SlackEventHandlers:
                 ack=ack,
                 body=body,
                 client=client,
-                notification_message="休憩終了を通知しました。後半戦も頑張りましょう！",
+                notification_message="休憩終了を投稿しました。後半戦も頑張りましょう！",
             )
 
         @self.app.action("personal_settings")
@@ -68,13 +68,9 @@ class SlackEventHandlers:
                 personal_settings_json = json.load(f)
             client.views_open(trigger_id=body["trigger_id"], view=personal_settings_json)
 
-        @self.app.action("submit_personal_settings")
+        @self.app.view("submit_personal_settings")
         def handle_submit_personal_settings(ack, body, client):
-            ack()
-            with open("app/blocks/app_home.json", "r") as f:
-                app_home_json = json.load(f)
-            app_home_json["blocks"][NOTIFICATION_JSON_NUMBER]["text"]["text"] = "個人設定を保存しました"
-            client.views_publish(user_id=body["user"]["id"], view=app_home_json)
+            self.button_action(ack=ack, body=body, client=client, notification_message="個人設定を保存しました")
 
     @staticmethod
     def button_action(ack, body, client, notification_message):
