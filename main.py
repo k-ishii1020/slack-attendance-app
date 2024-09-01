@@ -7,12 +7,15 @@ from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
 from app.config.logging_config import setup_logging
+from app.db_service import DBService
 from app.slack_event_handler import SlackEventHandlers
 
 if __name__ == "__main__":
     try:
         load_dotenv()
         setup_logging()
+        db_service = DBService()
+        db_service.init_db()
 
         app = App(token=os.getenv("SLACK_BOT_TOKEN"))
         slack_event_handler = SlackEventHandlers(app)
