@@ -5,7 +5,7 @@
 			"type": "header",
 			"text": {
 				"type": "plain_text",
-				"text": "出退勤投稿Bot",
+				"text": ":wave: 出退勤投稿Botへようこそ",
 				"emoji": true
 			}
 		},
@@ -14,9 +14,17 @@
 			"text": {
 				"type": "mrkdwn",
 				"text": "今日もお仕事お疲れ様です:sparkles:"
+			},
+			"accessory": {
+				"type": "button",
+				"text": {
+					"type": "plain_text",
+					"text": ":gear: 個人設定",
+					"emoji": true
+				},
+				"action_id": "personal_settings"
 			}
 		},
-
 		{
 			"type": "section",
 			"text": {
@@ -31,19 +39,19 @@
 					"type": "button",
 					"text": {
 						"type": "plain_text",
-						"text": ":office: オフィス出社",
+						"text": ":office: オフィス勤務",
 						"emoji": true
 					},
-                    "action_id": "begin_office_work"
+					"action_id": "begin_office_work"
 				},
 				{
 					"type": "button",
 					"text": {
 						"type": "plain_text",
-						"text": ":house: リモート出社",
+						"text": ":house: リモート勤務",
 						"emoji": true
 					},
-                    "action_id": "begin_remote_work"
+					"action_id": "begin_remote_work"
 				}
 			]
 		},
@@ -64,7 +72,7 @@
 						"text": ":city_sunset: 退勤",
 						"emoji": true
 					},
-                    "action_id": "finish_work"
+					"action_id": "finish_work"
 				}
 			]
 		},
@@ -102,34 +110,62 @@
 			"type": "input",
 			"element": {
 				"type": "plain_text_input",
-				"multiline": true
+				"multiline": false
 			},
 			"label": {
 				"type": "plain_text",
-				"text": "各ボタン押下時に追加事項があれば以下に入力してください（Ex: 本日17時にフレックス退社予定です）",
+				"text": "投稿時に追加事項があれば以下に入力してください",
 				"emoji": true
 			}
-		},
-		{
-			"type": "actions",
-			"elements": [
-				{
-					"type": "button",
-					"text": {
-						"type": "plain_text",
-						"text": ":gear: 個人設定",
-						"emoji": true
-					},
-					"action_id": "personal_settings"
-				}
-			]
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "アプリからのお知らせ: -"
+				"text": "*アプリからのお知らせ:*"
 			}
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "image",
+					"image_url": "https://api.slack.com/img/blocks/bkb_template_images/placeholder.png",
+					"alt_text": "placeholder"
+				}
+			]
+		},
+		{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": ":gear: 個人設定について",
+				"emoji": true
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*チャンネルに直接投稿タイプ*\n・勤怠をスレッド内ではなくチャンネルに直接投稿する場合に使用します。\n*スレッド内投稿タイプ*\n・特定のスレッド内に投稿する場合は対象チャンネルと該当スレッドのメッセージを指定します。\n\n※２つのタイプを併用することも可能です。"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*出勤時にプロフィールの出社ステータス変更をする* :office: :house:\n出勤時にSlackプロフィールのステータスを出社orリモートに変更できます。"
+			}
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "image",
+					"image_url": "https://api.slack.com/img/blocks/bkb_template_images/placeholder.png",
+					"alt_text": "placeholder"
+				}
+			]
 		},
 		{
 			"type": "divider"
