@@ -19,8 +19,13 @@ class GetAccessToken:
         self.oauth_settings = OAuthSettings(
             client_id=os.getenv("SLACK_APP_CLIENT_ID"),
             client_secret=os.getenv("SLACK_APP_CLIENT_SECRET"),
-            scopes=["chat:write", "users:read"],
-            user_scopes=["chat:write", "users.profile:write"],
+            user_scopes=[
+                "chat:write",
+                "users.profile:read",
+                "users.profile:write",
+                "search:read",
+                "channels:read",
+            ],
         )
 
         self.app = App(
