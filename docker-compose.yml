@@ -1,0 +1,20 @@
+services:
+
+  mysqld:
+    container_name: slack_attendance_bot_mysqld
+    image: mysql:8.4.0
+    environment:
+      TZ: Asia/Tokyo
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+      MYSQL_DATABASE: slack_attendance
+      MYSQL_USER: slack_attendance
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - ./mysql/slack_attendance_bot_mysqld:/var/lib/mysql
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    cap_add:
+      - SYS_NICE
+    ports:
+      - "33061:3306"
+    restart: always

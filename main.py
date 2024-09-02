@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
+from app.config.db_settings import is_connect_mysql
 from app.config.logging_config import setup_logging
-from app.db_service import DBService
 from app.get_access_token import GetAccessToken
 from app.slack_event_handler import SlackEventHandlers
 
@@ -16,8 +16,7 @@ if __name__ == "__main__":
     try:
         load_dotenv()
         setup_logging()
-        db_service = DBService()
-        db_service.init_db()
+        is_connect_mysql()
 
         app = App(token=os.getenv("SLACK_BOT_TOKEN"))
         slack_event_handler = SlackEventHandlers(app)

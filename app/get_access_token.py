@@ -17,14 +17,14 @@ class GetAccessToken:
 
         # OAuthSettingsをインスタンス化して設定
         self.oauth_settings = OAuthSettings(
-            client_id=os.getenv("SLACK_CLIENT_ID"),
-            client_secret=os.getenv("SLACK_CLIENT_SECRET"),
+            client_id=os.getenv("SLACK_APP_CLIENT_ID"),
+            client_secret=os.getenv("SLACK_APP_CLIENT_SECRET"),
             scopes=["chat:write", "users:read"],
-            user_scopes=["chat:write", "users:read"],
+            user_scopes=["chat:write", "users.profile:write"],
         )
 
         self.app = App(
-            signing_secret=os.getenv("SLACK_SIGNING_SECRET"),
+            signing_secret=os.getenv("SLACK_APP_SIGNING_SECRET"),
             oauth_settings=self.oauth_settings,
         )
         self.handler = SlackRequestHandler(self.app)
@@ -47,7 +47,7 @@ class GetAccessToken:
                 user_id = oauth_response["authed_user"]["id"]
                 user_token = oauth_response["authed_user"]["access_token"]
 
-                self.db_service.save_user_token(user_id, user_token)
+                self.db_service.save_access_token(user_id, user_token)
 
             except Exception as e:
                 print(f"Error during OAuth: {e}")
