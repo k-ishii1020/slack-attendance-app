@@ -1,10 +1,12 @@
 """Slackのイベントハンドラモジュール"""
 
 import json
+import os
 
 from slack_bolt import App
 
 from app.db_service import DBService
+from app.db_service import Users
 from app.post_service import PostService
 
 NOTIFICATION_JSON_NUMBER = 9
@@ -28,7 +30,7 @@ class SlackEventHandlers:
         @self.app.action("begin_office_work")
         def handle_begin_office_work(ack, body, client):
             ack()
-            self.post_service.post_message(app=self.app, user_id=body["event"]["user"], action="begin_office_work")
+            self.post_service.post_message(user_id=body["user"]["id"], action="begin_office_work")
             self.publish_app_home(
                 user_id=body["user"]["id"], client=client, notification_message="オフィス出勤を投稿しました"
             )
@@ -36,6 +38,7 @@ class SlackEventHandlers:
         @self.app.action("begin_remote_work")
         def handle_begin_remote_work(ack, body, client):
             ack()
+            self.post_service.post_message(user_id=body["user"]["id"], action="begin_remote_work")
             self.publish_app_home(
                 user_id=body["user"]["id"], client=client, notification_message="リモート出勤を投稿しました"
             )
@@ -44,6 +47,7 @@ class SlackEventHandlers:
         @self.app.action("finish_work")
         def handle_finish_work(ack, body, client):
             ack()
+            self.post_service.post_message(user_id=body["user"]["id"], action="finish_work")
             self.publish_app_home(
                 user_id=body["user"]["id"],
                 client=client,
@@ -54,6 +58,7 @@ class SlackEventHandlers:
         @self.app.action("begin_break_time")
         def handle_begin_break_time(ack, body, client):
             ack()
+            self.post_service.post_message(user_id=body["user"]["id"], action="begin_break_time")
             self.publish_app_home(
                 user_id=body["user"]["id"],
                 client=client,
@@ -63,6 +68,7 @@ class SlackEventHandlers:
         @self.app.action("finish_break_time")
         def handle_finish_break_time(ack, body, client):
             ack()
+            self.post_service.post_message(user_id=body["user"]["id"], action="finish_break_time")
             self.publish_app_home(
                 user_id=body["user"]["id"],
                 client=client,
@@ -76,8 +82,8 @@ class SlackEventHandlers:
             db_service = DBService()
 
             # ユーザの個人設定をのJSONを取得
-            personal_settings_data = db_service.load_personal_settings(user_id=body["user"]["id"])
-            personal_settings_view = self.create_personal_settings_view(personal_settings_data)
+            user: Users = db_service.get_user(user_id=body["user"]["id"])
+            personal_settings_view = self.create_personal_settings_view(user.settings_json)
 
             # モーダルを表示
             client.views_open(trigger_id=body["trigger_id"], view=personal_settings_view)
@@ -94,6 +100,8 @@ class SlackEventHandlers:
             begin_office_work_message = values["begin_office_work_message"]["begin_office_work_message"]["value"]
             begin_remote_work_message = values["begin_remote_work_message"]["begin_remote_work_message"]["value"]
             finish_work_message = values["finish_work_message"]["finish_work_message"]["value"]
+            begin_break_time = values["begin_break_time"]["begin_break_time"]["value"]
+            finish_break_time = values["finish_break_time"]["finish_break_time"]["value"]
             attendance_channel_ids = values["attendance_channel_ids"]["attendance_channel_ids"]["selected_conversations"]
             attendance_thread_channel_id = values["attendance_thread_channel_id"]["attendance_thread_channel_id"]["selected_conversation"]
             attendance_thread_message =values["attendance_thread_message"]["attendance_thread_message"]["value"]
@@ -110,6 +118,8 @@ class SlackEventHandlers:
                     "begin_office_work_message": begin_office_work_message,
                     "begin_remote_work_message": begin_remote_work_message,
                     "finish_work_message": finish_work_message,
+                    "begin_break_time": begin_break_time,
+                    "finish_break_time": finish_break_time,
                     "attendance_channel_ids": attendance_channel_ids,
                     "attendance_thread_channel_id": attendance_thread_channel_id,
                     "attendance_thread_message": attendance_thread_message,
@@ -117,7 +127,7 @@ class SlackEventHandlers:
                 }
 
                 sb_service = DBService()
-                sb_service.save_personal_settings(user_id, personal_settings_json_data)
+                sb_service.save_personal_settings(user_id, json.dumps(personal_settings_json_data))
 
             self.publish_app_home(user_id=user_id, client=client, notification_message=message)
 
@@ -143,11 +153,14 @@ class SlackEventHandlers:
         return True, "個人設定を保存しました"
 
     @staticmethod
-    def create_personal_settings_view(personal_settings_data):
+    def create_personal_settings_view(settings_json: dict) -> dict:
         # デフォルト値
-        begin_office_work_message = "業務開始します（出社）"
-        begin_remote_work_message = "業務開始します（リモート）"
-        finish_work_message = "業務終了します。お疲れ様でした。"
+        begin_office_work_message = os.getenv("BEGIN_OFFICE_WORK_MESSAGE")
+        begin_remote_work_message = os.getenv("BEGIN_REMOTE_WORK_MESSAGE")
+        finish_work_message = os.getenv("FINISH_WORK_MESSAGE")
+        begin_break_time = os.getenv("BEGIN_BREAK_TIME")
+        finish_break_time = os.getenv("FINISH_BREAK_TIME")
+
         attendance_channel_ids = []
         attendance_thread_channel_id = None
         attendance_thread_message = ""
@@ -155,14 +168,16 @@ class SlackEventHandlers:
         change_profile_status_text = "はい"
         change_profile_status_value = "True"
 
-        if personal_settings_data:
-            begin_office_work_message = personal_settings_data["begin_office_work_message"]
-            begin_remote_work_message = personal_settings_data["begin_remote_work_message"]
-            finish_work_message = personal_settings_data["finish_work_message"]
-            attendance_channel_ids = personal_settings_data["attendance_channel_ids"]
-            attendance_thread_channel_id = personal_settings_data["attendance_thread_channel_id"]
-            attendance_thread_message = personal_settings_data["attendance_thread_message"]
-            change_profile_status = personal_settings_data["change_profile_status"]
+        if settings_json:
+            begin_office_work_message = settings_json["begin_office_work_message"]
+            begin_remote_work_message = settings_json["begin_remote_work_message"]
+            finish_work_message = settings_json["finish_work_message"]
+            begin_break_time = settings_json["begin_break_time"]
+            finish_break_time = settings_json["finish_break_time"]
+            attendance_channel_ids = settings_json["attendance_channel_ids"]
+            attendance_thread_channel_id = settings_json["attendance_thread_channel_id"]
+            attendance_thread_message = settings_json["attendance_thread_message"]
+            change_profile_status = settings_json["change_profile_status"]
 
         if not change_profile_status:
             change_profile_status_text = "いいえ"
@@ -234,7 +249,47 @@ class SlackEventHandlers:
                     },
                     "label": {
                         "type": "plain_text",
-                        "text": "リモート勤務時に投稿するメッセージを入力",
+                        "text": "退勤時に投稿するメッセージを入力",
+                        "emoji": True,
+                    },
+                    "optional": True,
+                },
+                {
+                    "type": "input",
+                    "block_id": "begin_break_time",
+                    "element": {
+                        "type": "plain_text_input",
+                        "action_id": "begin_break_time",
+                        "placeholder": {
+                            "type": "plain_text",
+                            "text": "例: 休憩開始します。",
+                            "emoji": True,
+                        },
+                        "initial_value": begin_break_time,
+                    },
+                    "label": {
+                        "type": "plain_text",
+                        "text": "休憩開始時に投稿するメッセージを入力",
+                        "emoji": True,
+                    },
+                    "optional": True,
+                },
+                {
+                    "type": "input",
+                    "block_id": "finish_break_time",
+                    "element": {
+                        "type": "plain_text_input",
+                        "action_id": "finish_break_time",
+                        "placeholder": {
+                            "type": "plain_text",
+                            "text": "例: 休憩終了します。",
+                            "emoji": True,
+                        },
+                        "initial_value": finish_break_time,
+                    },
+                    "label": {
+                        "type": "plain_text",
+                        "text": "休憩終了時に投稿するメッセージを入力",
                         "emoji": True,
                     },
                     "optional": True,
@@ -361,9 +416,9 @@ class SlackEventHandlers:
 
         # 初期登録前の場合は不要な要素を削除
         if not attendance_thread_channel_id:
-            del views["blocks"][9]["element"]["initial_conversation"]
+            del views["blocks"][11]["element"]["initial_conversation"]
 
         if not attendance_thread_message:
-            del views["blocks"][10]["element"]["initial_value"]
+            del views["blocks"][12]["element"]["initial_value"]
 
         return views
