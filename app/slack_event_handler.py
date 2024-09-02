@@ -9,6 +9,7 @@ from app.db_service import DBService
 from app.db_service import Users
 from app.post_service import PostService
 
+WELCOME_MESSAGE_JSON_NUMBER = 0
 NOTIFICATION_JSON_NUMBER = 9
 
 
@@ -106,8 +107,8 @@ class SlackEventHandlers:
             begin_office_work_message = values["begin_office_work_message"]["begin_office_work_message"]["value"]
             begin_remote_work_message = values["begin_remote_work_message"]["begin_remote_work_message"]["value"]
             finish_work_message = values["finish_work_message"]["finish_work_message"]["value"]
-            begin_break_time = values["begin_break_time"]["begin_break_time"]["value"]
-            finish_break_time = values["finish_break_time"]["finish_break_time"]["value"]
+            begin_break_time_message = values["begin_break_time_message"]["begin_break_time_message"]["value"]
+            finish_break_time_message = values["finish_break_time_message"]["finish_break_time_message"]["value"]
             attendance_channel_ids = values["attendance_channel_ids"]["attendance_channel_ids"]["selected_conversations"]
             attendance_thread_channel_id = values["attendance_thread_channel_id"]["attendance_thread_channel_id"]["selected_conversation"]
             attendance_thread_message =values["attendance_thread_message"]["attendance_thread_message"]["value"]
@@ -124,8 +125,8 @@ class SlackEventHandlers:
                     "begin_office_work_message": begin_office_work_message,
                     "begin_remote_work_message": begin_remote_work_message,
                     "finish_work_message": finish_work_message,
-                    "begin_break_time": begin_break_time,
-                    "finish_break_time": finish_break_time,
+                    "begin_break_time_message": begin_break_time_message,
+                    "finish_break_time_message": finish_break_time_message,
                     "attendance_channel_ids": attendance_channel_ids,
                     "attendance_thread_channel_id": attendance_thread_channel_id,
                     "attendance_thread_message": attendance_thread_message,
@@ -152,6 +153,8 @@ class SlackEventHandlers:
         with open("app/blocks/app_home.json", "r") as f:
             app_home_json = json.load(f)
 
+        app_home_json["blocks"][WELCOME_MESSAGE_JSON_NUMBER]["text"]["text"] = os.getenv("WELCOME_MESSAGE")
+
         app_home_json["blocks"][NOTIFICATION_JSON_NUMBER]["text"]["text"] = (
             f"*アプリからのお知らせ*:\n {notification_message}"
         )
@@ -174,8 +177,8 @@ class SlackEventHandlers:
         begin_office_work_message = os.getenv("BEGIN_OFFICE_WORK_MESSAGE")
         begin_remote_work_message = os.getenv("BEGIN_REMOTE_WORK_MESSAGE")
         finish_work_message = os.getenv("FINISH_WORK_MESSAGE")
-        begin_break_time = os.getenv("BEGIN_BREAK_TIME")
-        finish_break_time = os.getenv("FINISH_BREAK_TIME")
+        begin_break_time_message = os.getenv("BEGIN_BREAK_TIME_MESSAGE")
+        finish_break_time_message = os.getenv("FINISH_BREAK_TIME_MESSAGE")
 
         attendance_channel_ids = []
         attendance_thread_channel_id = None
@@ -188,8 +191,8 @@ class SlackEventHandlers:
             begin_office_work_message = settings_json["begin_office_work_message"]
             begin_remote_work_message = settings_json["begin_remote_work_message"]
             finish_work_message = settings_json["finish_work_message"]
-            begin_break_time = settings_json["begin_break_time"]
-            finish_break_time = settings_json["finish_break_time"]
+            begin_break_time_message = settings_json["begin_break_time_message"]
+            finish_break_time_message = settings_json["finish_break_time_message"]
             attendance_channel_ids = settings_json["attendance_channel_ids"]
             attendance_thread_channel_id = settings_json["attendance_thread_channel_id"]
             attendance_thread_message = settings_json["attendance_thread_message"]
@@ -272,16 +275,16 @@ class SlackEventHandlers:
                 },
                 {
                     "type": "input",
-                    "block_id": "begin_break_time",
+                    "block_id": "begin_break_time_message",
                     "element": {
                         "type": "plain_text_input",
-                        "action_id": "begin_break_time",
+                        "action_id": "begin_break_time_message",
                         "placeholder": {
                             "type": "plain_text",
                             "text": "例: 休憩開始します。",
                             "emoji": True,
                         },
-                        "initial_value": begin_break_time,
+                        "initial_value": begin_break_time_message,
                     },
                     "label": {
                         "type": "plain_text",
@@ -292,16 +295,16 @@ class SlackEventHandlers:
                 },
                 {
                     "type": "input",
-                    "block_id": "finish_break_time",
+                    "block_id": "finish_break_time_message",
                     "element": {
                         "type": "plain_text_input",
-                        "action_id": "finish_break_time",
+                        "action_id": "finish_break_time_message",
                         "placeholder": {
                             "type": "plain_text",
                             "text": "例: 休憩終了します。",
                             "emoji": True,
                         },
-                        "initial_value": finish_break_time,
+                        "initial_value": finish_break_time_message,
                     },
                     "label": {
                         "type": "plain_text",
