@@ -15,7 +15,7 @@ NOTIFICATION_JSON_NUMBER = 9
 class SlackEventHandlers:
     def __init__(self, app: App):
         self.app = app
-        self.post_service = PostService(app)
+        self.post_service = PostService()
 
     def event_handlers(self):
         """Slackイベントハンドラ"""
@@ -30,49 +30,55 @@ class SlackEventHandlers:
         @self.app.action("begin_office_work")
         def handle_begin_office_work(ack, body, client):
             ack()
-            self.post_service.post_message(user_id=body["user"]["id"], action="begin_office_work")
-            self.publish_app_home(
-                user_id=body["user"]["id"], client=client, notification_message="オフィス出勤を投稿しました"
+            self.post_message(
+                user_id=body["user"]["id"],
+                client=client,
+                action="begin_office_work",
+                notification_message=":office:オフィス出勤を投稿しました",
             )
 
+        # リモート出勤ボタン
         @self.app.action("begin_remote_work")
         def handle_begin_remote_work(ack, body, client):
             ack()
-            self.post_service.post_message(user_id=body["user"]["id"], action="begin_remote_work")
-            self.publish_app_home(
-                user_id=body["user"]["id"], client=client, notification_message="リモート出勤を投稿しました"
+            self.post_message(
+                user_id=body["user"]["id"],
+                client=client,
+                action="begin_remote_work",
+                notification_message=":house:リモート出勤を投稿しました",
             )
 
         # 退勤ボタン
         @self.app.action("finish_work")
         def handle_finish_work(ack, body, client):
             ack()
-            self.post_service.post_message(user_id=body["user"]["id"], action="finish_work")
-            self.publish_app_home(
+            self.post_message(
                 user_id=body["user"]["id"],
                 client=client,
+                action="finish_work",
                 notification_message="退勤を投稿しました。今日も一日お疲れ様でした！",
             )
 
-        # 休憩ボタン
+        # 休憩開始ボタン
         @self.app.action("begin_break_time")
         def handle_begin_break_time(ack, body, client):
             ack()
-            self.post_service.post_message(user_id=body["user"]["id"], action="begin_break_time")
-            self.publish_app_home(
+            self.post_message(
                 user_id=body["user"]["id"],
                 client=client,
+                action="begin_break_time",
                 notification_message="休憩開始を投稿しました。ゆっくり休んでくださいね！",
             )
 
+        # 休憩終了ボタン
         @self.app.action("finish_break_time")
         def handle_finish_break_time(ack, body, client):
             ack()
-            self.post_service.post_message(user_id=body["user"]["id"], action="finish_break_time")
-            self.publish_app_home(
+            self.post_message(
                 user_id=body["user"]["id"],
                 client=client,
-                notification_message="休憩終了を投稿しました。後半戦も頑張りましょう！",
+                action="finish_break_time",
+                notification_message="休憩終了を投稿しました。後半戦もファイトです！",
             )
 
         # 個人設定モーダル呼び出し
@@ -127,9 +133,15 @@ class SlackEventHandlers:
                 }
 
                 sb_service = DBService()
-                sb_service.save_personal_settings(user_id, json.dumps(personal_settings_json_data))
+                sb_service.save_personal_settings(user_id, personal_settings_json_data)
 
             self.publish_app_home(user_id=user_id, client=client, notification_message=message)
+
+    def post_message(self, user_id, client, action, notification_message):
+        result = self.post_service.post_message(user_id=user_id, action=action)
+        if result[0] == 1:
+            notification_message = result[1]
+        self.publish_app_home(user_id=user_id, client=client, notification_message=notification_message)
 
     @staticmethod
     def publish_app_home(user_id, client, notification_message):
