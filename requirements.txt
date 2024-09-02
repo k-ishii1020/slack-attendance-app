@@ -1,4 +1,17 @@
+blinker==1.8.2
+cffi==1.17.0
+click==8.1.7
+cryptography==43.0.0
+Flask==3.0.3
+itsdangerous==2.2.0
+Jinja2==3.1.4
+MarkupSafe==2.1.5
+pycparser==2.22
+PyMySQL==1.1.1
 python-dotenv==1.0.1
 slack-log-handler==0.3.0
 slack_bolt==1.20.1
 slack_sdk==3.31.0
+SQLAlchemy==2.0.32
+typing_extensions==4.12.2
+Werkzeug==3.0.4
