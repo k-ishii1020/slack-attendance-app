@@ -12,7 +12,13 @@ class DBService:
             CREATE TABLE IF NOT EXISTS personal_settings (
                 user_id TEXT PRIMARY KEY,
                 settings_json JSON
-            )
+            );
+        """)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                user_id TEXT PRIMARY KEY,
+                access_token TEXT
+            );
         """)
         self.conn.commit()
         self.conn.close()
@@ -49,4 +55,32 @@ class DBService:
         conn.close()
         if row:
             return json.loads(row[0])
+        return None
+
+    def save_user_token(self, user_id, access_token):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            INSERT OR REPLACE INTO users (user_id, access_token)
+            VALUES (?, ?)
+        """,
+            (user_id, access_token),
+        )
+        conn.commit()
+        conn.close()
+
+    def load_user_token(self, user_id):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT access_token FROM users WHERE user_id = ?
+        """,
+            (user_id,),
+        )
+        row = cursor.fetchone()
+        conn.close()
+        if row:
+            return row[0]
         return None

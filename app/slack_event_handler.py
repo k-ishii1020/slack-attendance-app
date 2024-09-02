@@ -5,6 +5,7 @@ import json
 from slack_bolt import App
 
 from app.db_service import DBService
+from app.post_service import PostService
 
 NOTIFICATION_JSON_NUMBER = 9
 
@@ -12,6 +13,7 @@ NOTIFICATION_JSON_NUMBER = 9
 class SlackEventHandlers:
     def __init__(self, app: App):
         self.app = app
+        self.post_service = PostService(app)
 
     def event_handlers(self):
         """Slackイベントハンドラ"""
@@ -26,6 +28,7 @@ class SlackEventHandlers:
         @self.app.action("begin_office_work")
         def handle_begin_office_work(ack, body, client):
             ack()
+            self.post_service.post_message(app=self.app, user_id=body["event"]["user"], action="begin_office_work")
             self.publish_app_home(
                 user_id=body["user"]["id"], client=client, notification_message="オフィス出勤を投稿しました"
             )
