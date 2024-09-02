@@ -1,7 +1,21 @@
 services:
+  slack_attendance_app:
+    container_name: slack_attendance_app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      TZ: Asia/Tokyo
+    volumes:
+      - ./logs:/logs
+    ports:
+      - "${SLACK_APP_OAUTH_PORT}:80"
+    restart: always
+    depends_on:
+      - mysqld
 
   mysqld:
-    container_name: slack_attendance_bot_mysqld
+    container_name: slack_attendance_app_mysqld
     image: mysql:8.4.0
     environment:
       TZ: Asia/Tokyo
@@ -10,11 +24,9 @@ services:
       MYSQL_USER: slack_attendance
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
-      - ./mysql/slack_attendance_bot_mysqld:/var/lib/mysql
+      - ./mysql/slack_attendance_app_mysqld:/var/lib/mysql
       - ./mysql/conf.d:/etc/mysql/conf.d
       - ./mysql/init:/docker-entrypoint-initdb.d
     cap_add:
       - SYS_NICE
-    ports:
-      - "33061:3306"
     restart: always

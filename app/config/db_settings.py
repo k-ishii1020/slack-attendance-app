@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
 
-# MySQLの設定情報
+# MySQL Configuration
 USERNAME = os.getenv("DATABASE_USER")
 PASSWORD = os.getenv("DATABASE_PASSWORD")
 HOST = os.getenv("DATABASE_HOST")
@@ -24,14 +24,13 @@ engine = create_engine(
     DATABASE_URL, echo=False, query_cache_size=0, isolation_level="REPEATABLE READ", pool_pre_ping=True
 )
 
-# MySQLのセッションを作成する
+# Create a MySQL session
 Session = scoped_session(sessionmaker(bind=engine, expire_on_commit=False))
 
 
 @staticmethod
-def is_connect_mysql():
-    """MySQLに接続できるか確認する"""
-    time.sleep(10)  # docker-composeでMySQLが立ち上がるまで待つ
+def check_connect_mysql():
+    time.sleep(10)  # wait for MySQL to start
     try:
         db_session = Session()
         if db_session.execute(text("SELECT 1")).scalar() == 1:

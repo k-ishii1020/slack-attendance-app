@@ -1,5 +1,3 @@
-"""Slackのイベントハンドラモジュール"""
-
 import json
 import os
 
@@ -19,9 +17,7 @@ class SlackEventHandlers:
         self.post_service = PostService()
 
     def event_handlers(self):
-        """Slackイベントハンドラ"""
-
-        # アプリホーム
+        # APP Home
         @self.app.event("app_home_opened")
         def handle_app_home_opened(ack, body, client):
             ack()

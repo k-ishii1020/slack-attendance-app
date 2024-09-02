@@ -44,7 +44,7 @@ class PostService:
         change_profile_status = user.settings_json["change_profile_status"]
 
         # ユーザのユーザトークンを設定
-        # 注意:mainで生成したSlack AppのSLACK_BOT_TOKENを書き換えるのは禁止。都度WebClientを生成し、ユーザトークンを設定すること。
+        # 注意:mainで生成したSlack AppのSLACK_APP_BOT_TOKENを書き換えるのは禁止。都度WebClientを生成し、ユーザトークンを設定すること。
         user_client = WebClient(token=user.access_token)
 
         # 直接投稿タイプ

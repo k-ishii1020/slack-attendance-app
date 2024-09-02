@@ -15,7 +15,6 @@ class GetAccessToken:
         self.flask_app = Flask(__name__)
         self.db_service = DBService()
 
-        # OAuthSettingsをインスタンス化して設定
         self.oauth_settings = OAuthSettings(
             client_id=os.getenv("SLACK_APP_CLIENT_ID"),
             client_secret=os.getenv("SLACK_APP_CLIENT_SECRET"),
@@ -33,8 +32,6 @@ class GetAccessToken:
             oauth_settings=self.oauth_settings,
         )
         self.handler = SlackRequestHandler(self.app)
-
-        # Flaskのルートを設定
         self.set_routes()
 
     def set_routes(self):
@@ -61,11 +58,11 @@ class GetAccessToken:
 
         @self.flask_app.route("/success", methods=["GET"])
         def success():
-            return "連携に成功しました"
+            return "Success in Slack authentication"
 
         @self.flask_app.route("/error", methods=["GET"])
         def error():
-            return "連携に失敗しました"
+            return "Error in Slack authentication. Please contact the administrator."
 
     def run(self):
-        self.flask_app.run(port=3000)
+        self.flask_app.run(port=os.getenv("SLACK_APP_OAUTH_PORT"), debug=False)
