@@ -31,7 +31,7 @@ class SlackEventHandlers:
         def handle_begin_office_work(ack, body, client):
             ack()
             self.post_message(
-                user_id=body["user"]["id"],
+                body,
                 client=client,
                 action="begin_office_work",
                 notification_message=":office:オフィス出勤を投稿しました",
@@ -42,7 +42,7 @@ class SlackEventHandlers:
         def handle_begin_remote_work(ack, body, client):
             ack()
             self.post_message(
-                user_id=body["user"]["id"],
+                body,
                 client=client,
                 action="begin_remote_work",
                 notification_message=":house:リモート出勤を投稿しました",
@@ -53,7 +53,7 @@ class SlackEventHandlers:
         def handle_finish_work(ack, body, client):
             ack()
             self.post_message(
-                user_id=body["user"]["id"],
+                body,
                 client=client,
                 action="finish_work",
                 notification_message="退勤を投稿しました。今日も一日お疲れ様でした！",
@@ -64,7 +64,7 @@ class SlackEventHandlers:
         def handle_begin_break_time(ack, body, client):
             ack()
             self.post_message(
-                user_id=body["user"]["id"],
+                body,
                 client=client,
                 action="begin_break_time",
                 notification_message="休憩開始を投稿しました。ゆっくり休んでくださいね！",
@@ -75,7 +75,7 @@ class SlackEventHandlers:
         def handle_finish_break_time(ack, body, client):
             ack()
             self.post_message(
-                user_id=body["user"]["id"],
+                body,
                 client=client,
                 action="finish_break_time",
                 notification_message="休憩終了を投稿しました。後半戦もファイトです！",
@@ -137,11 +137,15 @@ class SlackEventHandlers:
 
             self.publish_app_home(user_id=user_id, client=client, notification_message=message)
 
-    def post_message(self, user_id, client, action, notification_message):
-        result = self.post_service.post_message(user_id=user_id, action=action)
+    def post_message(self, body, client, action, notification_message):
+        result = self.post_service.post_message(
+            user_id=body["user"]["id"],
+            action=action,
+            postscript=body["view"]["state"]["values"]["postscript"]["postscript"]["value"],
+        )
         if result[0] == 1:
             notification_message = result[1]
-        self.publish_app_home(user_id=user_id, client=client, notification_message=notification_message)
+        self.publish_app_home(user_id=body["user"]["id"], client=client, notification_message=notification_message)
 
     @staticmethod
     def publish_app_home(user_id, client, notification_message):

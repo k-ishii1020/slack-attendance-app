@@ -108,8 +108,10 @@
 		},
 		{
 			"type": "input",
+			"block_id": "postscript",
 			"element": {
 				"type": "plain_text_input",
+				"action_id": "postscript",
 				"multiline": false
 			},
 			"label": {

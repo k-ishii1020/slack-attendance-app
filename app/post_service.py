@@ -8,7 +8,7 @@ class PostService:
     def __init__(self):
         self.db_service = DBService()
 
-    def post_message(self, user_id, action) -> tuple[int, str]:
+    def post_message(self, user_id, action, postscript) -> tuple[int, str]:
         # ユーザの個人設定をのJSONを取得
         db_service = DBService()
         user: Users = db_service.get_user(user_id=user_id)
@@ -35,6 +35,9 @@ class PostService:
                 send_message = user.settings_json["begin_break_time_message"]
             case "finish_break_time":
                 send_message = user.settings_json["finish_break_time_message"]
+
+        if postscript:
+            send_message += f"\n{postscript}"
 
         # ユーザのユーザトークンを設定
         # 注意:Slack AppのBOTトークンを書き換えるのは禁止。都度WebClientを生成し、ユーザトークンを設定すること。
