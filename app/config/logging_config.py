@@ -50,7 +50,6 @@ def setup_logging():
     logging.basicConfig(
         level=logging.INFO,
         format=LOG_FORMAT,
-        handlers=[file_handler, console_handler],
-        # handlers=[file_handler, console_handler, slack_error_handler, slack_info_handler],
+        handlers=[file_handler, console_handler, slack_error_handler, slack_info_handler],
     )
     return logging.getLogger(__name__)
