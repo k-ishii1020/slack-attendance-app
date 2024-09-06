@@ -23,8 +23,8 @@ Slack Attendance Botは、Slack上で出退勤や休憩の通知を任意のチ�
 ### 初回セットアップ
 ```shell
 # 本リポジトリのクローン
-git clone https://github.com/yourusername/slack-attendance-bot.git
-cd slack-attendance-bot
+git clone https://github.com/k-ishii1020/slack-attendance-app.git
+cd slack-attendance-app
 cp .env.sample .env
 # 任意のエディタで.envの内容を修正
 nano .env

@@ -35,7 +35,7 @@ class GetAccessToken:
         self.set_routes()
 
     def set_routes(self):
-        @self.flask_app.route("/slack/install", methods=["GET"])
+        @self.flask_app.route("/slack-attendance-app/install", methods=["GET"])
         def install():
             return self.handler.handle(request)
 
@@ -65,4 +65,4 @@ class GetAccessToken:
             return "Error in Slack authentication. Please contact the administrator."
 
     def run(self):
-        self.flask_app.run(host="0.0.0.0", port=os.getenv("SLACK_APP_OAUTH_PORT"), debug=False)
+        self.flask_app.run(host="0.0.0.0", port=80, debug=False)
