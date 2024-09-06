@@ -9,8 +9,8 @@ services:
     volumes:
       - ./logs:/logs
     ports:
-      - "${SLACK_APP_OAUTH_PORT}:80"
-    restart: always
+      - "8080:${SLACK_APP_OAUTH_PORT}"
+    restart: unless-stopped
     depends_on:
       - mysqld
 
@@ -27,8 +27,6 @@ services:
       - ./mysql/slack_attendance_app_mysqld:/var/lib/mysql
       - ./mysql/conf.d:/etc/mysql/conf.d
       - ./mysql/init:/docker-entrypoint-initdb.d
-    ports:
-      - "${DATABASE_PORT}:${DATABASE_PORT}"
     cap_add:
       - SYS_NICE
-    restart: always
+    restart: unless-stopped
