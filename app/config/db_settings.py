@@ -16,7 +16,7 @@ USERNAME = os.getenv("DATABASE_USER")
 PASSWORD = os.getenv("DATABASE_PASSWORD")
 HOST = os.getenv("DATABASE_HOST")
 DATABASE = os.getenv("DATABASE_NAME")
-PORT = os.getenv("DATABASE_PORT")
+PORT = 3306
 
 DATABASE_URL = f"mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}?charset=utf8mb4"
 

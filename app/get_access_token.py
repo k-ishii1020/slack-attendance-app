@@ -65,4 +65,4 @@ class GetAccessToken:
             return "Error in Slack authentication. Please contact the administrator."
 
     def run(self):
-        self.flask_app.run(host="0.0.0.0", port=80, debug=False)
+        self.flask_app.run(host="0.0.0.0", port=os.getenv("SLACK_APP_OAUTH_PORT"), debug=False)
