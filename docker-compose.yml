@@ -9,7 +9,7 @@ services:
     volumes:
       - ./logs:/logs
     ports:
-      - "8080:${SLACK_APP_OAUTH_PORT}"
+      - "${SLACK_APP_OAUTH_PORT}:80"
     restart: unless-stopped
     depends_on:
       - mysqld
