@@ -62,7 +62,12 @@ class PostService:
             search_query = f"in:{channel_name} {attendance_thread_message}"
 
             result = user_client.search_messages(
-                channel=attendance_thread_channel_id, query=search_query, count=1, sort_dir="desc", page=1
+                channel=attendance_thread_channel_id,
+                query=search_query,
+                count=1,
+                sort="timestamp",
+                sort_dir="desc",
+                page=1,
             )
             if result["messages"]["total"] == 0:
                 return 1, ":warning:勤怠スレッドが見つかりませんでした。キーワードを確認してください。"
