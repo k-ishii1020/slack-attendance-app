@@ -16,7 +16,10 @@ class PostService:
         user: Users = db_service.get_user(user_id=user_id)
 
         if user is None:
-            return 1, ":warning:Slackアプリの認証が実施されていません。認証を実施してください。"
+            return (
+                1,
+                f":warning: Slack認証が完了していません。<{os.getenv("SLACK_APP_OAUTH_URL")}|こちら>から認証を行ってください",
+            )
         if user.settings_json is None:
             return 1, ":warning:ユーザの個人設定が実施されていません。個人設定を実施してください。"
 

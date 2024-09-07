@@ -92,7 +92,7 @@ class SlackEventHandlers:
                 self.publish_app_home(
                     user_id=body["user"]["id"],
                     client=client,
-                    notification_message=f":warning: Slack認証が完了していません。<{os.getenv("SLACK_APP_OAUTH_URL")}]こちら>から認証を行ってください",
+                    notification_message=f":warning: Slack認証が完了していません。<{os.getenv("SLACK_APP_OAUTH_URL")}|こちら>から認証を行ってください",
                 )
                 return
 
