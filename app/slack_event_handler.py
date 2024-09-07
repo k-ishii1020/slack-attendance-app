@@ -90,10 +90,11 @@ class SlackEventHandlers:
             if not user:
                 # ユーザが初めての場合はDBに登録
                 self.publish_app_home(
-                    user_id=body["event"]["user"],
+                    user_id=body["user"]["id"],
                     client=client,
                     notification_message=f":warning: Slack認証が完了していません。<{os.getenv("SLACK_APP_OAUTH_URL")}]こちら>から認証を行ってください",
                 )
+                return
 
             personal_settings_view = self.create_personal_settings_view(user.settings_json)
 
