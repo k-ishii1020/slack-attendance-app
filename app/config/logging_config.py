@@ -37,19 +37,10 @@ def setup_logging():
     slack_error_handler.setFormatter(logging.Formatter(LOG_FORMAT))
     slack_error_handler.setLevel(logging.ERROR)
 
-    # Slack 通知ハンドラーを作成
-    slack_info_handler = SlackLogHandler(
-        os.getenv("LOG_INFO_WEBHOOK"),
-        username=os.getenv("NICKNAME"),
-        emojis=EMOJIS,
-    )
-    slack_info_handler.setFormatter(logging.Formatter(LOG_FORMAT))
-    slack_info_handler.setLevel(logging.INFO)
-
     # Loggerの基本設定
     logging.basicConfig(
         level=logging.INFO,
         format=LOG_FORMAT,
-        handlers=[file_handler, console_handler, slack_error_handler, slack_info_handler],
+        handlers=[file_handler, console_handler, slack_error_handler],
     )
     return logging.getLogger(__name__)

@@ -1,3 +1,4 @@
+import logging
 import os
 
 from flask import Flask
@@ -65,4 +66,8 @@ class GetAccessToken:
             return "Error in Slack authentication. Please contact the administrator."
 
     def run(self):
-        self.flask_app.run(host="0.0.0.0", port=80, debug=False)
+        try:
+            self.flask_app.run(host="0.0.0.0", port=80, debug=False)
+        except Exception as e:
+            print(f"Error in running Flask app: {e}")
+            logging.error(f"Error in running Flask app: {e}")
