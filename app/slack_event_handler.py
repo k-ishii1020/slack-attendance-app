@@ -104,9 +104,7 @@ class SlackEventHandlers:
         # 個人設定保存
         @self.app.view("submit_personal_settings")
         def handle_submit_personal_settings(ack, body, client):
-            ack()
             user_id = body["user"]["id"]
-
             values = body["view"]["state"]["values"]
 
             # fmt: off
@@ -123,26 +121,28 @@ class SlackEventHandlers:
             )
             # fmt: on
 
-            result, message = self.personal_settings_error_check(
+            error_check_json = self.personal_settings_error_check(
                 attendance_channel_ids, attendance_thread_channel_id, attendance_thread_message
             )
-            if result:
-                personal_settings_json_data = {
-                    "begin_office_work_message": begin_office_work_message,
-                    "begin_remote_work_message": begin_remote_work_message,
-                    "finish_work_message": finish_work_message,
-                    "begin_break_time_message": begin_break_time_message,
-                    "finish_break_time_message": finish_break_time_message,
-                    "attendance_channel_ids": attendance_channel_ids,
-                    "attendance_thread_channel_id": attendance_thread_channel_id,
-                    "attendance_thread_message": attendance_thread_message,
-                    "change_profile_status": change_profile_status,
-                }
+            if error_check_json:
+                ack(error_check_json)
+                return
+            ack()
+            personal_settings_json_data = {
+                "begin_office_work_message": begin_office_work_message,
+                "begin_remote_work_message": begin_remote_work_message,
+                "finish_work_message": finish_work_message,
+                "begin_break_time_message": begin_break_time_message,
+                "finish_break_time_message": finish_break_time_message,
+                "attendance_channel_ids": attendance_channel_ids,
+                "attendance_thread_channel_id": attendance_thread_channel_id,
+                "attendance_thread_message": attendance_thread_message,
+                "change_profile_status": change_profile_status,
+            }
 
-                sb_service = DBService()
-                sb_service.save_personal_settings(user_id, personal_settings_json_data)
-
-            self.publish_app_home(user_id=user_id, client=client, notification_message=message)
+            sb_service = DBService()
+            sb_service.save_personal_settings(user_id, personal_settings_json_data)
+            self.publish_app_home(user_id=user_id, client=client, notification_message="個人設定を保存しました")
 
     def post_message(self, body, client, action, notification_message):
         result = self.post_service.post_message(
@@ -169,13 +169,23 @@ class SlackEventHandlers:
     @staticmethod
     def personal_settings_error_check(
         attendance_channel_ids, attendance_thread_channel_id, attendance_thread_message
-    ) -> tuple:
+    ) -> str:
         if not attendance_channel_ids and not attendance_thread_channel_id:
-            return False, ":warning: チャンネルに直接投稿タイプかスレッド内投稿タイプのどちらかは必須です"
+            return {
+                "response_action": "errors",
+                "errors": {
+                    "attendance_channel_ids": "チャンネルに直接投稿タイプかスレッド内投稿タイプのどちらかは必須です"
+                },
+            }
 
         if attendance_thread_channel_id and not attendance_thread_message:
-            return False, ":warning:スレッド内投稿タイプを設定する場合はスレッドの最初のメッセージを入力してください"
-        return True, "個人設定を保存しました"
+            return {
+                "response_action": "errors",
+                "errors": {
+                    "attendance_channel_ids": "スレッド内投稿タイプを設定する場合はスレッドの最初のメッセージを入力してください"
+                },
+            }
+        return None
 
     @staticmethod
     def create_personal_settings_view(settings_json: dict) -> dict:
