@@ -174,7 +174,8 @@ class SlackEventHandlers:
             return {
                 "response_action": "errors",
                 "errors": {
-                    "attendance_channel_ids": "チャンネルに直接投稿タイプかスレッド内投稿タイプのどちらかは必須です"
+                    "attendance_channel_ids": "チャンネルに直接投稿タイプかスレッド内投稿タイプのどちらかは必須です",
+                    "attendance_thread_channel_id": "チャンネルに直接投稿タイプかスレッド内投稿タイプのどちらかは必須です",
                 },
             }
 
@@ -182,7 +183,7 @@ class SlackEventHandlers:
             return {
                 "response_action": "errors",
                 "errors": {
-                    "attendance_channel_ids": "スレッド内投稿タイプを設定する場合はスレッドの最初のメッセージを入力してください"
+                    "attendance_thread_message": "スレッド内投稿タイプを設定する場合はスレッドの最初のメッセージを入力してください"
                 },
             }
         return None
