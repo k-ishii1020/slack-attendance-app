@@ -36,15 +36,11 @@ class GetAccessToken:
         self.set_routes()
 
     def set_routes(self):
-        @self.flask_app.route("/auth-slack-attendance-app", methods=["GET"])
+        @self.flask_app.route("/slack/install", methods=["GET"])
         def install():
-            try:
-                return self.handler.handle(request)
-            except Exception as e:
-                print(f"Error during OAuth: {e}")
-                logging.error(f"Error during OAuth: {e}")
+            return self.handler.handle(request)
 
-        @self.flask_app.route("/auth-slack-attendance-app/callback", methods=["GET"])
+        @self.flask_app.route("/slack/callback", methods=["GET"])
         def oauth_callback():
             code = request.args.get("code")
             try:
