@@ -1,0 +1,15 @@
+# Description: This file is used to set config for the attendance bot.
+
+welcome_message: ":wave: Welcome to Attendance Bot"
+
+default_messages:
+  begin_office_work: "Start work (office）"
+  begin_remote_work: "Start work (remote)"
+  finish_work: "Finish work."
+  begin_break_time: "Start break."
+  finish_break_time: "Finish break."
+
+attendance_emoji:
+  office_work: ":office:"
+  remote_work: ":house:"
+  finish_work: ":zzz:"

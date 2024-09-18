@@ -3,6 +3,7 @@ import os
 
 from slack_bolt import App
 
+from app.config.config_loader import config
 from app.db_service import DBService
 from app.db_service import Users
 from app.post_service import PostService
@@ -159,7 +160,7 @@ class SlackEventHandlers:
         with open("app/blocks/app_home.json", "r") as f:
             app_home_json = json.load(f)
 
-        app_home_json["blocks"][WELCOME_MESSAGE_JSON_NUMBER]["text"]["text"] = os.getenv("WELCOME_MESSAGE")
+        app_home_json["blocks"][WELCOME_MESSAGE_JSON_NUMBER]["text"]["text"] = config["welcome_message"]
 
         app_home_json["blocks"][NOTIFICATION_JSON_NUMBER]["text"]["text"] = (
             f"*アプリからのお知らせ*:\n {notification_message}"
@@ -191,11 +192,11 @@ class SlackEventHandlers:
     @staticmethod
     def create_personal_settings_view(settings_json: dict) -> dict:
         # デフォルト値
-        begin_office_work_message = os.getenv("BEGIN_OFFICE_WORK_MESSAGE")
-        begin_remote_work_message = os.getenv("BEGIN_REMOTE_WORK_MESSAGE")
-        finish_work_message = os.getenv("FINISH_WORK_MESSAGE")
-        begin_break_time_message = os.getenv("BEGIN_BREAK_TIME_MESSAGE")
-        finish_break_time_message = os.getenv("FINISH_BREAK_TIME_MESSAGE")
+        begin_office_work_message = config["default_messages"]["begin_office_work"]
+        begin_remote_work_message = config["default_messages"]["begin_remote_work"]
+        finish_work_message = config["default_messages"]["finish_work"]
+        begin_break_time_message = config["default_messages"]["begin_break_time"]
+        finish_break_time_message = config["default_messages"]["finish_break_time"]
 
         attendance_channel_ids = []
         attendance_thread_channel_id = None

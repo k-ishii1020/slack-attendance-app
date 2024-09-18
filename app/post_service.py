@@ -2,6 +2,7 @@ import os
 
 from slack_sdk import WebClient
 
+from app.config.config_loader import config
 from app.db_service import DBService
 from app.db_service import Users
 
@@ -27,12 +28,13 @@ class PostService:
         match action:
             case "begin_office_work":
                 send_message = user.settings_json["begin_office_work_message"]
-                status_emoji = os.getenv("OFFICE_WORK_EMOJI")
+                status_emoji = config["attendance_emoji"]["office_work"]
             case "begin_remote_work":
                 send_message = user.settings_json["begin_remote_work_message"]
-                status_emoji = os.getenv("REMOTE_WORK_EMOJI")
+                status_emoji = config["attendance_emoji"]["remote_work"]
             case "finish_work":
                 send_message = user.settings_json["finish_work_message"]
+                status_emoji = config["attendance_emoji"]["finish_work"]
             case "begin_break_time":
                 send_message = user.settings_json["begin_break_time_message"]
             case "finish_break_time":
