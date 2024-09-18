@@ -12,25 +12,23 @@ Slack Attendance Appは、Slack上で出退勤や休憩の通知を任意のチ�
 - 出退勤時にプロフィールのステータス絵文字を変更（🏢🏠💤）
 - 投稿する際のメッセージは個人ごとに変更可能。
 
-## 必要な環境
+## システム
+### 必要な環境
 - Docker Composeが使用できるサーバ（PythonとMySQLを使用します）
 - ユーザトークンを取得するOAuth認証を行うために、アクセス可能なドメインを持っていること。
 - Slackアプリを作成するための権限を持っていること。
 
-## 本アプリ導入に必要な前提知識
+### 本アプリ導入に必要な前提知識
 - Slackのアプリの作成方法
 - Slackのユーザトークン、アプリトークンの違いの理解
 - Docker Composeの基本的な使い方
 
-## 技術的な補足
+### 技術的な補足
 - Slackとの通信はWebsocketを使用
 - データベースはMySQLを使用し、ユーザトークンは暗号化して保存
 
-## 制約事項
-- 勤怠連絡を特定のスレッド内に投稿するタイプを使用する場合、パブリックチャンネルのみ対応しています。  
-プライベートチャンネルやDMにはあえて対応していません。（詳細は後述）
 
-## 初回セットアップ
+### 初回セットアップ
 ```shell
 # 本リポジトリのクローン
 git clone https://github.com/k-ishii1020/slack-attendance-app.git
@@ -43,7 +41,7 @@ nano .env
 nano config.yaml
 ```
 
-## Slackアプリの作成
+### Slackアプリの作成
 1. https://api.slack.com/apps → From a Manifestを選択し、app_manifest.yamlの内容を参考にアプリを作成
 1. Basic Information → App CredentialsのClient ID、Client Secret、Signing Secretを.envのSLACK_APP_CLIENT_ID、SLACK_APP_CLIENT_SECRET、SLACK_APP_SIGNING_SECRETに設定。
 1. Basic Information → App-Level Tokensを作成し、.envのSLACK_APP_APP_TOKENに設定。  
@@ -62,6 +60,11 @@ docker compose down
 ### .envを修正したりGit最新化を行った場合
 docker compose down && docker compose up -d --build
 ```
+
+## 制約事項
+- 勤怠連絡を特定のスレッド内に投稿するタイプを使用する場合、パブリックチャンネルのみ対応しています。  
+プライベートチャンネルやDMにはあえて対応していません。（詳細は後述）
+
 
 ## Slackユーザトークンの取得の際の権限について
 本Slackアプリでは、ユーザトークンに以下の権限が必要です。  
@@ -83,8 +86,10 @@ docker compose down && docker compose up -d --build
   そのため、特定の組織でしか使えない機能は実装しません。
   
 
+## 今後のやりたいこと
+- 多言語対応
 
-## 注意事項・免責事項
+## ⚠️注意事項・免責事項
 - 本アプリを使用したことによるいかなる損害に対しても、制作者は一切の責任を負いません。
 - 本アプリは、使用者（本リポジトリをクローンした人）がセットアップしたデータベース内にユーザトークンを暗号化して保存します。
   万が一ユーザトークンが漏洩した場合、Slackのメッセージなどを不正に利用される可能性がありますので十分に注意してください。
