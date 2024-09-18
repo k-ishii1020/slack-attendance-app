@@ -1,5 +1,5 @@
 # Slack App Manifest
-## Slackアプリ作成の際に必要なApp Manifestのサンプルです
+## Slackアプリ作成の際に必要なApp Manifestのサンプルです。
 ## Slackの不具合でfeatures→bot_user→display_nameに日本語が含まれているとSaveできません。適当な英語を設定の上、サイドメニューのApp Home→App Display Nameにて表示名を変更してください。
 
 display_information:
