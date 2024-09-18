@@ -9,8 +9,8 @@ from app.db_service import Users
 from app.post_service import PostService
 
 WELCOME_MESSAGE_JSON_NUMBER = 0
-SLACK_APP_OAUTH_URL_JSON_NUMBER = 2
-NOTIFICATION_JSON_NUMBER = 10
+NOTIFICATION_JSON_NUMBER = 8
+SLACK_APP_OAUTH_URL_JSON_NUMBER = 10
 
 
 class SlackEventHandlers:
@@ -37,7 +37,7 @@ class SlackEventHandlers:
                 body,
                 client=client,
                 action="begin_office_work",
-                notification_message=":office:オフィス出勤を投稿しました",
+                notification_message=":white_check_mark: *オフィス出勤を投稿しました*",
             )
 
         # リモート出勤ボタン
@@ -48,7 +48,7 @@ class SlackEventHandlers:
                 body,
                 client=client,
                 action="begin_remote_work",
-                notification_message=":house:リモート出勤を投稿しました",
+                notification_message=":white_check_mark: *リモート出勤を投稿しました*",
             )
 
         # 退勤ボタン
@@ -59,7 +59,7 @@ class SlackEventHandlers:
                 body,
                 client=client,
                 action="finish_work",
-                notification_message="退勤を投稿しました。今日も一日お疲れ様でした！",
+                notification_message=":white_check_mark: *退勤を投稿しました。今日も一日お疲れ様でした！*",
             )
 
         # 休憩開始ボタン
@@ -70,7 +70,7 @@ class SlackEventHandlers:
                 body,
                 client=client,
                 action="begin_break_time",
-                notification_message="休憩開始を投稿しました。ゆっくり休んでくださいね！",
+                notification_message=":white_check_mark: *休憩開始を投稿しました。ゆっくり休んでくださいね！*",
             )
 
         # 休憩終了ボタン
@@ -81,7 +81,7 @@ class SlackEventHandlers:
                 body,
                 client=client,
                 action="finish_break_time",
-                notification_message="休憩終了を投稿しました。後半戦もファイトです！",
+                notification_message=":white_check_mark: *休憩終了を投稿しました。後半戦もファイトです！*",
             )
 
         # 個人設定モーダル呼び出し
@@ -98,7 +98,7 @@ class SlackEventHandlers:
                 self.publish_app_home(
                     user_id=body["user"]["id"],
                     client=client,
-                    notification_message=f":warning: Slack認証が完了していません。<{os.getenv("SLACK_APP_OAUTH_URL")}|こちら>から認証を行ってください",
+                    notification_message=f":warning: *Slack認証が完了していません。<{os.getenv("SLACK_APP_OAUTH_URL")}|こちら>から認証を行ってください*",
                 )
                 return
 
@@ -148,7 +148,9 @@ class SlackEventHandlers:
 
             sb_service = DBService()
             sb_service.save_personal_settings(user_id, personal_settings_json_data)
-            self.publish_app_home(user_id=user_id, client=client, notification_message="個人設定を保存しました")
+            self.publish_app_home(
+                user_id=user_id, client=client, notification_message=":white_check_mark: *個人設定を保存しました*"
+            )
 
     def post_message(self, body, client, action, notification_message):
         result = self.post_service.post_message(

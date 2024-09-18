@@ -13,39 +13,6 @@
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "今日もお仕事お疲れ様です:sparkles:"
-			},
-			"accessory": {
-				"type": "button",
-				"text": {
-					"type": "plain_text",
-					"text": ":gear: 個人設定",
-					"emoji": true
-				},
-				"action_id": "personal_settings"
-			}
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": " "
-			},
-			"accessory": {
-				"type": "button",
-				"text": {
-					"type": "plain_text",
-					"text": ":key: Slack認証",
-					"emoji": true
-				},
-				"url": "",
-				"action_id": "no_action"
-			}
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
 				"text": "*出勤*"
 			}
 		},
@@ -145,16 +112,6 @@
 			}
 		},
 		{
-			"type": "context",
-			"elements": [
-				{
-					"type": "image",
-					"image_url": "https://api.slack.com/img/blocks/bkb_template_images/placeholder.png",
-					"alt_text": "placeholder"
-				}
-			]
-		},
-		{
 			"type": "header",
 			"text": {
 				"type": "plain_text",
@@ -167,17 +124,17 @@
 			"text": {
 				"type": "mrkdwn",
 				"text": "1. まずは :key: Slack認証 ボタンからSlack認証を行ってください。\n2. 認証後、アプリのホーム画面に戻ります。\n3. :gear: 個人設定 ボタンから設定を行ってください。\n4. 出勤、退勤、休憩のボタンを押してみてください。"
+			},
+			"accessory": {
+				"type": "button",
+				"text": {
+					"type": "plain_text",
+					"text": ":key: Slack認証",
+					"emoji": true
+				},
+				"url": "",
+				"action_id": "no_action"
 			}
-		},
-		{
-			"type": "context",
-			"elements": [
-				{
-					"type": "image",
-					"image_url": "https://api.slack.com/img/blocks/bkb_template_images/placeholder.png",
-					"alt_text": "placeholder"
-				}
-			]
 		},
 		{
 			"type": "header",
@@ -192,6 +149,15 @@
 			"text": {
 				"type": "mrkdwn",
 				"text": "*チャンネルに直接投稿タイプ*\n・勤怠をスレッド内ではなくチャンネルに直接投稿する場合に使用します。\n*スレッド内投稿タイプ*\n・特定のスレッド内に投稿する場合は対象チャンネルと該当スレッドのメッセージを指定します。\n\n※２つのタイプを併用することも可能です。"
+			},
+			"accessory": {
+				"type": "button",
+				"text": {
+					"type": "plain_text",
+					"text": ":gear: 個人設定",
+					"emoji": true
+				},
+				"action_id": "personal_settings"
 			}
 		},
 		{
