@@ -58,28 +58,48 @@ class PostService:
                 user_client.chat_postMessage(channel=attendance_channel_id, text=send_message)
 
         # スレッド投稿タイプ
+        """ なぜsearch_messagesを使わないのか？
+        search_messagesは、ユーザトークンを使用するAPIで、そのユーザが参加しているプライベートチャンネルやDMのメッセージを検索することができる。
+        万が一、管理者がユーザトークンを悪用してしまうと、そのユーザが参加しているプライベートチャンネルやDMのメッセージを取得することができてしまう。
+        そのため、conversations_historyを使用し、さらにユーザスコープはchannels:historyのみ限定している。
+        """
         if attendance_thread_channel_id:
-            # attendance_thread_channel_idからchannnel_nameを取得
-            channel_info = user_client.conversations_info(channel=attendance_thread_channel_id)
-            channel_name = channel_info["channel"]["name"]
+            SEARCH_LIMIT = 10  # 会話を検索する回数 (1回につき100件取得) 1日に1000件を超える会話がある場合、1001件目以降の会話は取得できない。
+            attendance_thread_message_ts = None
+            cursor_param = None
 
-            # attendance_thread_channel_idのチャンネル内を検索し、直近でattendance_thread_messageが含まれるスレッドを取得
-            search_query = f"in:{channel_name} {attendance_thread_message}"
+            for _ in range(SEARCH_LIMIT):
+                # attendance_thread_channel_idのチャンネル内の24時間以内の会話を取得。
+                # 24時間以内のメッセージを取得するため、oldestに24時間前のUNIX時間を指定する。
+                conversations_list = user_client.conversations_history(
+                    channel=attendance_thread_channel_id,
+                    limit=100,
+                    cursor=cursor_param,
+                )
+                for message in conversations_list["messages"]:
+                    # conversations_listの中からattendance_thread_messageを含むメッセージTSを探す（前方一致）
+                    if message["text"].startswith(attendance_thread_message):
+                        attendance_thread_message_ts = message["ts"]
+                        break
+                if attendance_thread_message_ts:
+                    break
+                else:
+                    # 次のページがない場合、ループを抜ける
+                    if "response_metadata" not in conversations_list or not conversations_list[
+                        "response_metadata"
+                    ].get("next_cursor"):
+                        break
+                    cursor_param = conversations_list["response_metadata"]["next_cursor"]
+                    continue
 
-            result = user_client.search_messages(
-                channel=attendance_thread_channel_id,
-                query=search_query,
-                count=1,
-                sort="timestamp",
-                sort_dir="desc",
-                page=1,
-            )
-            if result["messages"]["total"] == 0:
+            if attendance_thread_message_ts is None:
                 return 1, ":warning:勤怠スレッドが見つかりませんでした。キーワードを確認してください。"
-            result_ts = result["messages"]["matches"][0]["ts"]
-            user_client.chat_postMessage(channel=attendance_thread_channel_id, text=send_message, thread_ts=result_ts)
 
-        if action not in ["begin_office_work", "begin_remote_work"]:
+            user_client.chat_postMessage(
+                channel=attendance_thread_channel_id, text=send_message, thread_ts=attendance_thread_message_ts
+            )
+
+        if action not in ["begin_office_work", "begin_remote_work", "finish_work"]:
             return 0, ""
 
         # ユーザのステータスを変更
