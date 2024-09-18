@@ -1,5 +1,5 @@
-# Slack Attendance Bot
-Slack Attendance Botは、Slack上で出退勤や休憩の通知を任意のチャンネルへ投稿するアプリです。
+# Slack Attendance App
+Slack Attendance Appは、Slack上で出退勤や休憩の通知を任意のチャンネルへ投稿するアプリです。
 
 ![](/assets/1.png)
 
@@ -39,7 +39,7 @@ cp .env.sample .env
 # 任意のエディタで.envで空欄になっている箇所を修正（Slackアプリ周りの詳細は後述）
 nano .env
 
-# 必要に応じで、config.yamlの内容を修正
+# 必要に応じて、config.yamlの内容を修正
 nano config.yaml
 ```
 
