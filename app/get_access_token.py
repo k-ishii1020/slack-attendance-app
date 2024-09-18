@@ -36,6 +36,10 @@ class GetAccessToken:
         self.set_routes()
 
     def set_routes(self):
+        @self.flask_app.route("/", methods=["GET"])
+        def ping():
+            return "OK", 200
+
         @self.flask_app.route("/slack/install", methods=["GET"])
         def install():
             return self.handler.handle(request)
