@@ -63,11 +63,11 @@ class GetAccessToken:
 
         @self.flask_app.route("/success", methods=["GET"])
         def success():
-            return "Success in Slack authentication"
+            return "Success in Slack authentication 認証が完了しました。この画面を閉じてください。"
 
         @self.flask_app.route("/error", methods=["GET"])
         def error():
-            return "Error in Slack authentication. Please contact the administrator."
+            return "Error in Slack authentication. Please contact the administrator. エラーが発生しました。管理者に連絡してください。"
 
     def run(self):
         try:
