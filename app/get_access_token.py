@@ -23,7 +23,6 @@ class GetAccessToken:
                 "chat:write",
                 "users.profile:read",
                 "users.profile:write",
-                "channels:read",
                 "channels:history",
             ],
         )

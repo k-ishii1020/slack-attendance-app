@@ -73,7 +73,6 @@ docker compose down && docker compose up -d --build
 - `users.profile:read` :ユーザのプロフィール情報を取得するため
 - `users.profile:write` :ユーザのプロフィール情報を変更するため
 - `channels:history`　: スレッド投稿タイプを使用する際に、該当のスレッドを検索するため
-- `channels:read` : チャンネルの一覧情報を取得するため
 
 ※  なお、`groups:history, im:history, mpim:history`についてはあえて付与していません。  
 ユーザトークンを入手したSlackアプリ管理者が、DMやプライベートチャンネルのメッセージを取得することを防ぐためです。

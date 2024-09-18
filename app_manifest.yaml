@@ -19,13 +19,12 @@ oauth_config:
     - https://example.com/slack/callback
   scopes:
     user:
-      - channels:read
       - chat:write
-      - search:read
       - users.profile:read
       - users.profile:write
+      - channels:history
     bot:
-      - channels:read
+      - emoji:read
 settings:
   event_subscriptions:
     bot_events:
