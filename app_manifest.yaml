@@ -1,0 +1,37 @@
+# Slack App Manifest
+## Slackアプリ作成の際に必要なApp Manifestのサンプルです
+## Slackの不具合でfeatures→bot_user→display_nameに日本語が含まれているとSaveできません。適当な英語を設定の上、サイドメニューのApp Home→App Display Nameにて表示名を変更してください。
+
+display_information:
+  name: 出退勤投稿アプリ
+  description: 任意のチャンネルに勤怠を投稿をするSlackアプリです。
+  background_color: "#c55100"
+features:
+  app_home:
+    home_tab_enabled: true
+    messages_tab_enabled: false
+    messages_tab_read_only_enabled: true
+  bot_user:
+    display_name: attendance_app
+    always_online: true
+oauth_config:
+  redirect_urls:
+    - https://example.com/slack/callback
+  scopes:
+    user:
+      - channels:read
+      - chat:write
+      - search:read
+      - users.profile:read
+      - users.profile:write
+    bot:
+      - channels:read
+settings:
+  event_subscriptions:
+    bot_events:
+      - app_home_opened
+  interactivity:
+    is_enabled: true
+  org_deploy_enabled: false
+  socket_mode_enabled: true
+  token_rotation_enabled: false
