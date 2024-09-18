@@ -46,7 +46,8 @@ nano config.yaml
 ## Slackアプリの作成
 1. https://api.slack.com/apps → From a Manifestを選択し、app_manifest.yamlの内容を参考にアプリを作成
 1. Basic Information → App CredentialsのClient ID、Client Secret、Signing Secretを.envのSLACK_APP_CLIENT_ID、SLACK_APP_CLIENT_SECRET、SLACK_APP_SIGNING_SECRETに設定。
-1. Basic Information → App-Level Tokensを作成し、.envのSLACK_APP_APP_TOKENに設定。Scopeは `connections:write`です。
+1. Basic Information → App-Level Tokensを作成し、.envのSLACK_APP_APP_TOKENに設定。  
+Scopeは `connections:write`です。（Websocket接続のため）
 1. OAuth & Permissions → OAuth TokensのInstall to {ワークスペース名} でトークンを生成。Bot User OAuth Tokenを.envのSLACK_APP_BOT_TOKENに設定。
 1. Basic Information → Display Informationを適当に設定
 
@@ -64,7 +65,7 @@ docker compose down && docker compose up -d --build
 
 ## Slackユーザトークンの取得の際の権限について
 本Slackアプリでは、ユーザトークンに以下の権限が必要です。  
-なお、データベースはSlackアプリ管理者が用意した環境に保存されるため、当然ながらSlackアプリ制作者にデータが送信されることは一切ありません。
+なお、データベースはSlackアプリ管理者が用意した環境に用意されるため、当然ながらSlackアプリ制作者にデータが送信されることは一切ありません。
 - `chat:write` :ユーザとしてメッセージを投稿するため
 - `users.profile:read` :ユーザのプロフィール情報を取得するため
 - `users.profile:write` :ユーザのプロフィール情報を変更するため
@@ -77,8 +78,10 @@ docker compose down && docker compose up -d --build
 ## 開発方針について
 本アプリは以下の方針に基づいて開発しています。
 - 機能追加の要望やバグ報告はIssueやPull Requestで受け付けています。
+- 質問などはDiscussionsを使用してください。
 - Slackアプリを使用する企業であれば、どの組織でも汎用的に利用できることを目指しています。  
   そのため、特定の組織でしか使えない機能は実装しません。
+  
 
 
 ## 注意事項・免責事項
@@ -88,4 +91,4 @@ docker compose down && docker compose up -d --build
   また、各種トークンやシークレット情報の取り扱いには十分注意してください。
 - 本アプリは、SlackのAPIを使用しています。そのため、SlackのAPIが変更された場合、本アプリの動作が保証されない可能性があります。
 - 本アプリは、MITライセンスで公開されています。商用利用や改変、再配布が可能ですが、その際の責任は負いかねます。
-- 寄付は大歓迎です！ぜひ[こちら](https://github.com/sponsors/k-ishii1020)からお願いします。
+- 寄付は大歓迎です！気に入って頂けましたら[こちら](https://github.com/sponsors/k-ishii1020)から寄付をお願いします。
