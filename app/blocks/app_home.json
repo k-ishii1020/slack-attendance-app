@@ -29,6 +29,23 @@
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
+				"text": " "
+			},
+			"accessory": {
+				"type": "button",
+				"text": {
+					"type": "plain_text",
+					"text": ":key: Slack認証",
+					"emoji": true
+				},
+				"url": "",
+				"action_id": "no_action"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
 				"text": "*出勤*"
 			}
 		},
@@ -125,6 +142,31 @@
 			"text": {
 				"type": "mrkdwn",
 				"text": "*アプリからのお知らせ:*"
+			}
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "image",
+					"image_url": "https://api.slack.com/img/blocks/bkb_template_images/placeholder.png",
+					"alt_text": "placeholder"
+				}
+			]
+		},
+		{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": ":beginner: はじめての使う人の設定",
+				"emoji": true
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "1. まずは :key: Slack認証 ボタンからSlack認証を行ってください。\n2. 認証後、アプリのホーム画面に戻ります。\n3. :gear: 個人設定 ボタンから設定を行ってください。\n4. 出勤、退勤、休憩のボタンを押してみてください。"
 			}
 		},
 		{

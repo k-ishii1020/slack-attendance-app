@@ -9,7 +9,8 @@ from app.db_service import Users
 from app.post_service import PostService
 
 WELCOME_MESSAGE_JSON_NUMBER = 0
-NOTIFICATION_JSON_NUMBER = 9
+SLACK_APP_OAUTH_URL_JSON_NUMBER = 2
+NOTIFICATION_JSON_NUMBER = 10
 
 
 class SlackEventHandlers:
@@ -23,6 +24,10 @@ class SlackEventHandlers:
         def handle_app_home_opened(ack, body, client):
             ack()
             self.publish_app_home(user_id=body["event"]["user"], client=client, notification_message="-")
+
+        @self.app.action("no_action")
+        def handle_no_action(ack):
+            ack()
 
         # 出勤ボタン
         @self.app.action("begin_office_work")
@@ -161,6 +166,7 @@ class SlackEventHandlers:
             app_home_json = json.load(f)
 
         app_home_json["blocks"][WELCOME_MESSAGE_JSON_NUMBER]["text"]["text"] = config["welcome_message"]
+        app_home_json["blocks"][SLACK_APP_OAUTH_URL_JSON_NUMBER]["accessory"]["url"] = os.getenv("SLACK_APP_OAUTH_URL")
 
         app_home_json["blocks"][NOTIFICATION_JSON_NUMBER]["text"]["text"] = (
             f"*アプリからのお知らせ*:\n {notification_message}"
