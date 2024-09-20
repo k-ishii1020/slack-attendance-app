@@ -13,8 +13,7 @@ class PostService:
 
     def post_message(self, user_id, action, postscript) -> tuple[int, str]:
         # ユーザの個人設定をのJSONを取得
-        db_service = DBService()
-        user: Users = db_service.get_user(user_id=user_id)
+        user: Users = self.db_service.get_user(user_id=user_id)
 
         if user is None:
             return (
