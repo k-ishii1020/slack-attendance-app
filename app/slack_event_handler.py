@@ -214,11 +214,19 @@ class SlackEventHandlers:
         change_profile_status_value = "True"
 
         if settings_json:
-            begin_office_work_message = settings_json["begin_office_work_message"]
-            begin_remote_work_message = settings_json["begin_remote_work_message"]
-            finish_work_message = settings_json["finish_work_message"]
-            begin_break_time_message = settings_json["begin_break_time_message"]
-            finish_break_time_message = settings_json["finish_break_time_message"]
+            begin_office_work_message = (
+                settings_json["begin_office_work_message"] or config["default_messages"]["begin_office_work"]
+            )
+            begin_remote_work_message = (
+                settings_json["begin_remote_work_message"] or config["default_messages"]["begin_remote_work"]
+            )
+            finish_work_message = settings_json["finish_work_message"] or config["default_messages"]["finish_work"]
+            begin_break_time_message = (
+                settings_json["begin_break_time_message"] or config["default_messages"]["begin_break_time"]
+            )
+            finish_break_time_message = (
+                settings_json["finish_break_time_message"] or config["default_messages"]["finish_break_time"]
+            )
             attendance_channel_ids = settings_json["attendance_channel_ids"]
             attendance_thread_channel_id = settings_json["attendance_thread_channel_id"]
             attendance_thread_message = settings_json["attendance_thread_message"]
