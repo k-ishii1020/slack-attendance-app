@@ -265,7 +265,6 @@ class SlackEventHandlers:
                         "text": "オフィス勤務時に投稿するメッセージを入力",
                         "emoji": True,
                     },
-                    "optional": True,
                 },
                 {
                     "type": "input",
@@ -285,7 +284,6 @@ class SlackEventHandlers:
                         "text": "リモート勤務時に投稿するメッセージを入力",
                         "emoji": True,
                     },
-                    "optional": True,
                 },
                 {
                     "type": "input",
@@ -305,7 +303,6 @@ class SlackEventHandlers:
                         "text": "退勤時に投稿するメッセージを入力",
                         "emoji": True,
                     },
-                    "optional": True,
                 },
                 {
                     "type": "input",
@@ -325,7 +322,6 @@ class SlackEventHandlers:
                         "text": "休憩開始時に投稿するメッセージを入力",
                         "emoji": True,
                     },
-                    "optional": True,
                 },
                 {
                     "type": "input",
@@ -345,7 +341,6 @@ class SlackEventHandlers:
                         "text": "休憩終了時に投稿するメッセージを入力",
                         "emoji": True,
                     },
-                    "optional": True,
                 },
                 {"type": "divider"},
                 {
