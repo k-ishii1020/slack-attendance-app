@@ -2,6 +2,7 @@ import logging
 import os
 import time
 
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
@@ -10,6 +11,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app.config.logging_config import setup_logging
 
+load_dotenv()
 logger: logging.Logger = setup_logging()
 
 # MySQL Configuration
