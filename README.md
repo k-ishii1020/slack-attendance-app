@@ -12,11 +12,6 @@ Slack Attendance Appは、Slack上で出退勤や休憩の通知を任意のチ�
 - 出退勤時にプロフィールのステータス絵文字を変更（🏢🏠💤）
 - 投稿する際のメッセージは個人ごとに変更可能。
 
-## ⚙️ 設定画面のイメージ図
-
-![](/assets/2.png)
-![](/assets/3.png)
-
 ## 💻 セットアップ
 ### 必要な環境
 - Docker Composeが使用できるサーバ（PythonとMySQLを使用します）
@@ -101,3 +96,8 @@ docker compose down && docker compose up -d --build
 - 本アプリは、SlackのAPIを使用しています。そのため、SlackのAPIが変更された場合、本アプリは正常に可能性があります。
 - 本アプリは、MITライセンスで公開されています。商用利用などは可能ですが、一切の責任は負いかねます。
 - 寄付いただけるとても励みになります！気に入って頂けましたら[こちら](https://github.com/sponsors/k-ishii1020)から寄付をお願いします。
+
+## ⚙️ (参考)設定画面のイメージ図
+
+![](/assets/2.png)
+![](/assets/3.png)
