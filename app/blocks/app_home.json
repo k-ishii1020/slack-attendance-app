@@ -115,7 +115,7 @@
 			"type": "header",
 			"text": {
 				"type": "plain_text",
-				"text": ":beginner: はじめての使う人の設定",
+				"text": ":beginner: はじめて使用するユーザの設定",
 				"emoji": true
 			}
 		},
@@ -185,7 +185,7 @@
 			"elements": [
 				{
 					"type": "mrkdwn",
-					"text": "Ver 1.0.0  Author: <https://github.com/k-ishii1020|k-ishii1020> GitHub: <https://github.com/k-ishii1020/slack-attendance-app|slack-attendance-app>"
+					"text": "Ver 1.0.1  Author: <https://github.com/k-ishii1020|k-ishii1020> GitHub: <https://github.com/k-ishii1020/slack-attendance-app|slack-attendance-app>"
 				}
 			]
 		}
