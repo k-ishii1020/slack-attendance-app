@@ -12,11 +12,11 @@ from app.config.logging_config import setup_logging
 from app.get_access_token import GetAccessToken
 from app.slack_event_handler import SlackEventHandlers
 
+load_dotenv()
 logger: logging.Logger = setup_logging()
 
 if __name__ == "__main__":
     try:
-        load_dotenv()
         check_connect_mysql()
 
         if os.getenv("ENCRYPTION_KEY") is None:
