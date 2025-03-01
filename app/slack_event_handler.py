@@ -98,7 +98,7 @@ class SlackEventHandlers:
                 self.publish_app_home(
                     user_id=body["user"]["id"],
                     client=client,
-                    notification_message=f":warning: *Slack認証が完了していません。<{os.getenv("SLACK_APP_OAUTH_URL")}|こちら>から認証を行ってください*",
+                    notification_message=f":warning: *Slack認証が完了していません。<{os.getenv('SLACK_APP_OAUTH_URL')}|こちら>から認証を行ってください*",
                 )
                 return
 
@@ -241,7 +241,7 @@ class SlackEventHandlers:
             "callback_id": "submit_personal_settings",
             "submit": {"type": "plain_text", "text": "OK", "emoji": True},
             "close": {"type": "plain_text", "text": "戻る", "emoji": True},
-            "title": {"type": "plain_text", "text": "出退勤Botの個人設定", "emoji": True},
+            "title": {"type": "plain_text", "text": "個人設定", "emoji": True},
             "blocks": [
                 {
                     "type": "header",
