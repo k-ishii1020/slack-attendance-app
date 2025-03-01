@@ -1,0 +1,29 @@
+{
+    "name": "Slack Attendance App",
+    "dockerComposeFile": ["../docker-compose.yml"],
+    "service": "slack_attendance_app",
+    "workspaceFolder": "/workspace",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "terminal.integrated.profiles.linux": {
+                    "bash": {
+                        "path": "/bin/bash"
+                    }
+                }
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-azuretools.vscode-docker",
+                "charliermarsh.ruff"
+            ]
+        }
+    },
+    "runServices": ["slack_attendance_app", "mysqld"],
+    "shutdownAction": "stopCompose",
+    "overrideCommand": true
+}
