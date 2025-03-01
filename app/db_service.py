@@ -11,11 +11,14 @@ from sqlalchemy import text
 from sqlalchemy.ext.declarative import declarative_base
 
 from app.config.db_settings import Session
+from app.config.logging_config import setup_logging
 from app.crypto_utils import decrypt_token
 from app.crypto_utils import encrypt_token
 from app.crypto_utils import generate_salt
 
 Base = declarative_base()
+
+logger: logging.Logger = setup_logging()
 
 
 def session_scope(func):
@@ -30,7 +33,7 @@ def session_scope(func):
             return result
         except Exception as e:
             db_session.rollback()
-            logging.error(f"Error during {func.__name__} with args {args}, kwargs {kwargs}: {str(e)}")
+            logger.error(f"Error during {func.__name__} with args {args}, kwargs {kwargs}: {str(e)}")
             raise
         finally:
             db_session.close()

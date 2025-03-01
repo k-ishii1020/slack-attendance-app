@@ -8,7 +8,10 @@ from slack_bolt import App
 from slack_bolt.adapter.flask import SlackRequestHandler
 from slack_bolt.oauth.oauth_settings import OAuthSettings
 
+from app.config.logging_config import setup_logging
 from app.db_service import DBService
+
+logger: logging.Logger = setup_logging()
 
 
 class GetAccessToken:
@@ -72,5 +75,5 @@ class GetAccessToken:
         try:
             self.flask_app.run(host="0.0.0.0", port=80, debug=False)
         except Exception as e:
-            logging.error(f"Error in running Flask app: {e}")
+            logger.error(f"Error in running Flask app: {e}")
             raise e

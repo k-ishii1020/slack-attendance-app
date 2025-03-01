@@ -2,14 +2,15 @@ import logging
 import os
 import time
 
-from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 
-load_dotenv()
+from app.config.logging_config import setup_logging
+
+logger: logging.Logger = setup_logging()
 
 # MySQL Configuration
 USERNAME = os.getenv("DATABASE_USER")
@@ -34,11 +35,11 @@ def check_connect_mysql():
     try:
         db_session = Session()
         if db_session.execute(text("SELECT 1")).scalar() == 1:
-            logging.info("MySQLへの接続に成功しました。")
+            logger.info("MySQLへの接続に成功しました。")
         else:
             raise OperationalError("Unexpected result from MySQL")
     except OperationalError as e:
-        logging.error(f"MySQLへの接続に失敗しました。: {e}")
+        logger.error(f"MySQLへの接続に失敗しました。: {e}")
         raise
     finally:
         db_session.close()
