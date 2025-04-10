@@ -38,7 +38,6 @@ if __name__ == "__main__":
         sys.exit(0)
 
     except Exception as e:
-        error_message = f"An exception has occurred in your the application. reason:\n{e}"
-        e
+        error_message = f"An exception has occurred in the application. Reason:\n{e}"
         logger.error(error_message, exc_info=True)
         sys.exit(1)

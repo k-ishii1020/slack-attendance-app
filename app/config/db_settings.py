@@ -31,7 +31,6 @@ engine = create_engine(
 Session = scoped_session(sessionmaker(bind=engine, expire_on_commit=False))
 
 
-@staticmethod
 def check_connect_mysql():
     time.sleep(10)  # wait for MySQL to start
     try:
