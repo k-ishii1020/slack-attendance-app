@@ -23,7 +23,8 @@ class PostService:
         if user.settings_json is None:
             return 1, ":warning:ユーザの個人設定が実施されていません。個人設定を実施してください。"
 
-        # 投稿するメッセージ
+        # 投稿するメッセージとステータス絵文字を設定
+        status_emoji = ""  # デフォルト値を設定
         match action:
             case "begin_office_work":
                 send_message = user.settings_json["begin_office_work_message"]

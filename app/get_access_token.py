@@ -59,7 +59,7 @@ class GetAccessToken:
                 self.db_service.save_access_token(user_id, user_token)
 
             except Exception as e:
-                print(f"Error during OAuth: {e}")
+                logger.error(f"Error during OAuth: {e}", exc_info=True)
                 return redirect("/error")
             return redirect("/success")
 
